@@ -35,12 +35,17 @@ app.listen(PORT, async () => {
 });
 
 //회원가입기능
-app.post("/register", async (req, res) => {
-  const { phone_number_or_email, account, name, password } = req.body;
-  console.log(phone_number_or_email, account, name, password);
+app.post("/user/register", async (req, res) => {
+  const { phoneNumber, email, account, name, password } = req.body;
   await appDataSource.query(
-    `insert into users (phone_number_or_email, account, name, password) values (?, ?, ?, ?);`,
-    [phone_number_or_email, account, name, password]
+    `INSERT INTO users (
+      phone_number,
+      email,
+      account,
+      name,
+      password)
+      VALUES (?, ?, ?, ?, ?);`,
+    [phoneNumber, email, account, name, password]
   );
   res.status(201).json({ message: "userCreated!" });
 });
