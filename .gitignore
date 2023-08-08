@@ -1032,4 +1032,7 @@ FodyWeavers.xsd
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 
+### dbmate ###
+schema.sql
+
 # End of https://www.toptal.com/developers/gitignore/api/python,pycharm,visualstudiocode,visualstudio,vim,macos,zsh,linux,webstorm,windows,node
