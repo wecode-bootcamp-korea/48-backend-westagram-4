@@ -19,6 +19,9 @@ const appDataSource = new DataSource({
 });
 const PORT = process.env.PORT;
 
+app.use(cors());
+app.use(logger("combined"));
+app.use(express.json());
 app.listen(PORT, async () => {
   console.log(`Listening to request on port: ${PORT}`);
   await appDataSource
