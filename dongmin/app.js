@@ -33,3 +33,19 @@ app.listen(PORT, async () => {
       console.error("Error during Data Source initialization", error);
     });
 });
+
+//회원가입기능
+app.post("/user/register", async (req, res) => {
+  const { phoneNumber, email, account, name, password } = req.body;
+  await appDataSource.query(
+    `INSERT INTO users (
+      phone_number,
+      email,
+      account,
+      name,
+      password)
+      VALUES (?, ?, ?, ?, ?);`,
+    [phoneNumber, email, account, name, password]
+  );
+  res.status(201).json({ message: "userCreated!" });
+});
