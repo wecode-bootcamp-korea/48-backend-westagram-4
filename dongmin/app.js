@@ -49,3 +49,18 @@ app.post("/user/register", async (req, res) => {
   );
   res.status(201).json({ message: "userCreated!" });
 });
+
+//게시물 등록기능
+app.post("/post", async (req, res) => {
+  const { userAccount, photoUrl, content, tag } = req.body;
+  await appDataSource.query(
+    `INSERT INTO posts (
+     user_account,
+     photo_url,
+     content,
+     tag)
+     VALUES (?, ?, ?, ?);`,
+    [userAccount, photoUrl, content, tag]
+  );
+  res.status(201).json({ message: "postCreated!" });
+});
