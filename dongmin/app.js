@@ -5,6 +5,7 @@ const express = require("express");
 const cors = require("cors");
 const logger = require("morgan");
 const { DataSource } = require("typeorm");
+const bcrypt = require("bcrypt");
 
 //custom package
 const app = express();
@@ -37,15 +38,20 @@ app.listen(PORT, async () => {
 //회원가입기능
 app.post("/user/register", async (req, res) => {
   const { phoneNumber, email, account, name, password } = req.body;
+  const saltRounds = 12;
+  const makeHash = async (password, saltRounds) => {
+    return await bcrypt.hash(password, saltRounds);
+  };
+  const cryptedPassword = await makeHash(password, saltRounds);
   await appDataSource.query(
     `INSERT INTO users (
       phone_number,
       email,
       account,
       name,
-      password)
+      crypted_password)
       VALUES (?, ?, ?, ?, ?);`,
-    [phoneNumber, email, account, name, password]
+    [phoneNumber, email, account, name, cryptedPassword]
   );
   res.status(201).json({ message: "userCreated!" });
 });
