@@ -17,35 +17,18 @@ const appDataSource = new DataSource({
  database: process.env.DB_DATABASE
 })
 
-
+appDataSource.initialize()
+  .then(() => {
+    console.log("Data Source has been initialized!");
+  });
 
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
 app.use(cors());
 app.use(morgan('dev'));
-
 
 app.get("/ping", (req, res, next) => {
     res.json({ message : "pong"});
 });
-
-app.post('/users', async (req, res) => {
-	const { user_id, user_name, user_password, user_age, user_email} = req.body
-    
-	await appDataSource.query(
-		`INSERT INTO users(
-			user_id,
-			user_name,
-			user_password,
-      user_age,
-      user_email
-		) VALUES (?, ?, ?, ?, ?);
-		`,
-		[ user_id, user_name, user_password, user_age, user_email ]
-	); 
-     res.status(201).json({ message : "successfully created" });
-	})
-
 
 app.listen(PORT, async () => {
   await appDataSource
@@ -59,4 +42,3 @@ app.listen(PORT, async () => {
 
   console.log(`Listening to request on port: ${PORT}`);
 });
-
