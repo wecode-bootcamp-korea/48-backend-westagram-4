@@ -31,6 +31,23 @@ app.get("/ping", (req, res) => {
     res.json({ message : "pong"});
 });
 
+app.post('/users', async (req, res) => {
+  const { name, email, password} = req.body;
+  const bcrypt = require('bcrypt');
+  const salt =  12
+  const hash_password = bcrypt.hashSync(password, salt);
+  await appDataSource.query(
+    `INSERT INTO users(
+      name,
+      email,
+      password
+    ) VALUES (?, ?, ?);
+    `,
+    [name, email, hash_password]
+  );
+     res.status(201).json({ message : "successfully created" });
+  })
+
 app.listen(3000, function() {
 	"listening on port 3000";
 });
